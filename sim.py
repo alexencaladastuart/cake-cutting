@@ -174,7 +174,7 @@ def main(args):
     for i in range (config.iters):
         statistics = sim.run_sim()
         for j in range(len(agents_to_run)):
-            agent_statistics[j][0] += statistics[j][0]
+            agent_statistics[j][0] += statistics[j][0]/config.iters
             if statistics[j][1] == True:
                 agent_statistics[j][1] += (1/config.iters)
     logging.info("=========SUMMARY=========")
