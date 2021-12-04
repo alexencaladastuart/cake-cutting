@@ -173,14 +173,14 @@ def main(args):
     config.add("num_agents", len(agents_to_run))
 
     if config.num_agents > config.num_pieces:
-        raise ValueError("cannot have more agents than pieces") 
+        raise ValueError("cannot have more agents than pieces")
 
     sim = Sim(config)
     agent_statistics = [[0,0] for i in range(config.num_agents)]
     for i in range (config.iters):
         statistics = sim.run_sim()
         for j in range(config.num_agents):
-            agent_statistics[j][0] += statistics[j][0]
+            agent_statistics[j][0] += statistics[j][0]/config.iters
             if statistics[j][1] == True:
                 agent_statistics[j][1] += (1/config.iters)
     logging.info("=========SUMMARY=========")
