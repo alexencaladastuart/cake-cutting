@@ -73,7 +73,7 @@ class Sim:
                     logging.debug(f"Agent {agent.id} values Agent {other_agent.id}'s slice at {agent.get_value_of_atoms(allocations[other_agent.id])}")
             statistics.append([percentage_received, envious])
         return statistics
-        
+
 
 
 def configure_logging(loglevel):
@@ -131,7 +131,7 @@ def main(args):
     parser.add_option("--num-pieces",
                       dest="num_pieces", default=10, type="int",
                       help="Set number of pieces the cake is divided into")
-    
+
     parser.add_option("--iters",
                       dest="iters", default=1, type="int",
                       help="Set number of iterations to run")
