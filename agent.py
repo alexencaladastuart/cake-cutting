@@ -26,6 +26,20 @@ class Agent:
         S = sum(V)
         self.V = [total * i / S for i in V]
 
+    def cut_halves(self, i, j):
+        """Cut a piece into two (approximately) equally-valued halves"""
+        left = 0
+        right = sum(self.V[i:j])
+        for k in range(i + 1, j):
+            left += self.V[k - 1]
+            right -= self.V[k - 1]
+            if left >= right:
+                return k
+
+    def choose_half(self, i, j, k):
+        """Choose the higher-valued of two pieces [i, j) and [j, k)"""
+        return (i, j) if sum(self.V[i:j]) >= sum(self.V[j:k]) else (j, k)
+
     def __repr__(self):
         return "%s(id=%s total_value=%s valuation=%s)" % (
             self.__class__.__name__,

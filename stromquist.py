@@ -2,7 +2,7 @@
 
 from stromquist_agent import StromquistAgent
 
-class STROMQUIST:
+class Stromquist:
     """
     Implements the Stromquist moving-knives procedure.
     """

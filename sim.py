@@ -14,12 +14,11 @@ from optparse import OptionParser
 from util import *
 
 # import cake-cutting procedures
-from dummy import DUMMY
-from stromquist import STROMQUIST
+from dummy import Dummy
+from stromquist import Stromquist
+from last_diminisher import LastDiminisher
 
-# TODO add more procedures
-
-procedures = ['dummy', 'stromquist']
+procedures = ['dummy', 'stromquist', 'last_diminisher']
 
 class Sim:
     def __init__(self, config):
@@ -32,10 +31,11 @@ class Sim:
 
         # Determine the procedure to run
         if (conf.procedure.lower() == 'dummy'):
-            procedure = DUMMY(conf)
+            procedure = Dummy(conf)
         elif conf.procedure.lower() == 'stromquist':
-            procedure = STROMQUIST(conf)
-        # TODO add more procedures
+            procedure = Stromquist(conf)
+        elif conf.procedure.lower() == 'last_diminisher':
+            procedure = LastDiminisher(conf)
         else:
             raise ValueError("invalid procedure %s" % conf.procedure.lower())
 
@@ -152,6 +152,10 @@ def main(args):
     config.add("procedure", procedure)
     config.add("num_pieces", options.num_pieces)
     config.add("agents_to_run", agents_to_run)
+    config.add("num_agents", len(agents_to_run))
+
+    if config.num_agents > config.num_pieces:
+        raise ValueError("cannot have more agents than pieces") 
 
     sim = Sim(config)
     sim.run_sim()

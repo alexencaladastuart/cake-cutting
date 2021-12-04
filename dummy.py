@@ -2,7 +2,7 @@
 
 from agent import Agent
 
-class DUMMY:
+class Dummy:
     """
     Dummy procedure that takes in three agents and ignores their valuations,
     allocating each approximately a third of the cake by area.
