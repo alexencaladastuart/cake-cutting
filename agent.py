@@ -29,9 +29,13 @@ class Agent:
     def get_total_cake_value(self):
         return sum(self.V)
 
-    # TODO add more value generation functions
+    def gen_normalized_float_valuation(self, total=1):
+        """Random float valuation that sums to total"""
+        V = [random.random() for i in range(self.conf.num_pieces)]
+        S = sum(V)
+        self.V = [total * i / S for i in V]
 
     def __repr__(self):
-        return "%s(id=%s valuation=%s)" % (
+        return "%s(id=%s total_value=%s valuation=%s)" % (
             self.__class__.__name__,
-            self.id, self.V)
+            self.id, sum(self.V), self.V)

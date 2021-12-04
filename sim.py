@@ -8,6 +8,7 @@ procedure, and reports results for each agent given their allocated piece.
 """
 
 import sys
+import random
 import logging
 from optparse import OptionParser
 from util import *
@@ -48,7 +49,8 @@ class Sim:
                 agent.gen_uniform_valuation(*args)
             elif val_generator == 'Random':
                 agent.gen_random_int_valuation(*args)
-            # TODO add more valuation generators
+            elif val_generator == 'Normalized':
+                agent.gen_normalized_float_valuation(*args)
             else:
                 raise ValueError("invalid valuation generator %s"
                                  % val_generator)
@@ -125,6 +127,10 @@ def main(args):
                       dest="iters", default=1, type="int",
                       help="Set number of iterations to run")
 
+    parser.add_option("--seed",
+                      dest="seed", default=None, type="int",
+                      help="seed for random numbers")
+
     (options, args) = parser.parse_args()
 
     # Get procedure name
@@ -146,6 +152,9 @@ def main(args):
             usage(e)
 
     configure_logging(options.loglevel)
+
+    if options.seed != None:
+        random.seed(options.seed)
 
     config = Params()
     config.add("procedure", procedure)
