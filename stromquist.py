@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import logging
 from stromquist_agent import StromquistAgent
 
 class Stromquist:
@@ -11,8 +12,6 @@ class Stromquist:
         self.agent = StromquistAgent
 
     def assign_pieces(self, i, positions, shouter):
-        # TODO assign pieces given a stopping point and agent knife positions
-        # placeholder return value
         allocation = [[],[],[]]
         sorted_positions = dict(sorted(positions.items(), key=lambda item: item[1]))
 
@@ -39,9 +38,9 @@ class Stromquist:
         if (len(agents)) != 3:
             raise ValueError("stromquist requires 3 agents, %d provided" % len(agents))
 
-        # TODO finish implementing procedure
-        # referee sword on the right side of the ith piece
+        # Referee sword on the right side of the ith piece
         for i in range(self.conf.num_pieces):
+            logging.info(f"------Round {i}------")
             positions = {}
             for agent in agents:
                 positions[agent.id] = agent.get_own_knife_position(i)
@@ -49,4 +48,3 @@ class Stromquist:
                 if agent.shout_cut(i, positions):
                     shouter = agent.id
                     return self.assign_pieces(i, positions, shouter)
-        # return self.assign_pieces(i, None, None)

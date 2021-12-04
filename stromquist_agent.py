@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import logging
 from agent import Agent
 
 class StromquistAgent(Agent):
@@ -7,8 +8,6 @@ class StromquistAgent(Agent):
     def __init__(self, config, id):
         super().__init__(config, id)
 
-    # TODO implement strategy for stromquist
-    # placeholder return value
     def shout_cut(self, i, positions):
         sorted_pos = list(positions.values())
         sorted_pos.sort()
@@ -21,12 +20,12 @@ class StromquistAgent(Agent):
 
         if my_knife >= middle_knife:
             if Left >= Right:
-                print(f"Agent {self.id} called cut when i is {i}")
+                logging.info(f"Agent {self.id} called cut!")
                 return True
         
         if my_knife < middle_knife:
             if Left >= Middle:
-                print(f"Agent {self.id} called cut when i is {i}")
+                logging.info(f"Agent {self.id} called cut!")
                 return True
         
         return False
@@ -39,5 +38,5 @@ class StromquistAgent(Agent):
         while value < totalvalue/2:
             value += cake[j]
             j += 1
-        print(f"Agent {self.id} positioned their knife at {i+j}")
+        logging.info(f"Agent {self.id} positioned their knife at {i+j}")
         return i + j

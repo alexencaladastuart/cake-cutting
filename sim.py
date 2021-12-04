@@ -58,9 +58,22 @@ class Sim:
 
         # Run procedure to get a list of the pieces allocated to each agent
         allocations = procedure.run(agents)
-        logging.info("Allocations: %s" % allocations)
+        logging.debug("Allocations: %s" % allocations)
 
-        # TODO print summary statistics and analysis
+        # Print proportionality and envy statistics
+        statistics = []
+        for agent in agents:
+            percentage_received = agent.get_value_of_atoms(allocations[agent.id])/agent.get_total_cake_value()
+            envious = False
+            logging.debug(f"Agent {agent.id} received a total of {agent.get_value_of_atoms(allocations[agent.id])} out of a total cake value of {agent.get_total_cake_value()}")
+            for other_agent in agents:
+                if other_agent.id is not agent.id:
+                    if agent.get_value_of_atoms(allocations[other_agent.id]) > agent.get_value_of_atoms(allocations[agent.id]):
+                        envious = True
+                    logging.debug(f"Agent {agent.id} values Agent {other_agent.id}'s slice at {agent.get_value_of_atoms(allocations[other_agent.id])}")
+            statistics.append([percentage_received, envious])
+        return statistics
+        
 
 
 def configure_logging(loglevel):
@@ -118,6 +131,10 @@ def main(args):
     parser.add_option("--num-pieces",
                       dest="num_pieces", default=10, type="int",
                       help="Set number of pieces the cake is divided into")
+    
+    parser.add_option("--iters",
+                      dest="iters", default=1, type="int",
+                      help="Set number of iterations to run")
 
     parser.add_option("--seed",
                       dest="seed", default=None, type="int",
@@ -151,6 +168,7 @@ def main(args):
     config = Params()
     config.add("procedure", procedure)
     config.add("num_pieces", options.num_pieces)
+    config.add("iters", options.iters)
     config.add("agents_to_run", agents_to_run)
     config.add("num_agents", len(agents_to_run))
 
@@ -158,7 +176,16 @@ def main(args):
         raise ValueError("cannot have more agents than pieces") 
 
     sim = Sim(config)
-    sim.run_sim()
+    agent_statistics = [[0,0] for i in range(config.num_agents)]
+    for i in range (config.iters):
+        statistics = sim.run_sim()
+        for j in range(config.num_agents):
+            agent_statistics[j][0] += statistics[j][0]
+            if statistics[j][1] == True:
+                agent_statistics[j][1] += (1/config.iters)
+    logging.info("=========SUMMARY=========")
+    for i in range(config.num_agents):
+        logging.info(f"Agent {i} got {agent_statistics[i][0]} of the cake and was envious {agent_statistics[i][1]} of the time")
 
 if __name__ == "__main__":
     # The next two lines are for profiling
