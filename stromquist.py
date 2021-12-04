@@ -42,6 +42,7 @@ class STROMQUIST:
         # TODO finish implementing procedure
         # referee sword on the right side of the ith piece
         for i in range(self.conf.num_pieces):
+            print(f"------Round {i}------")
             positions = {}
             for agent in agents:
                 positions[agent.id] = agent.get_own_knife_position(i)

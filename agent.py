@@ -19,6 +19,15 @@ class Agent:
     def gen_random_int_valuation(self, a=0, b=1):
         self.V = [round(random.uniform(a, b))
                   for i in range(self.conf.num_pieces)]
+    
+    def get_value_of_atoms(self, atoms):
+        value = 0
+        for atom in atoms:
+            value += self.V[atom]
+        return value
+    
+    def get_total_cake_value(self):
+        return sum(self.V)
 
     # TODO add more value generation functions
 

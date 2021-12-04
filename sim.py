@@ -57,7 +57,11 @@ class Sim:
         # Run procedure to get a list of the pieces allocated to each agent
         allocations = procedure.run(agents)
         logging.info("Allocations: %s" % allocations)
-
+        for agent in agents:
+            logging.info(f"Agent {agent.id} received a total of {agent.get_value_of_atoms(allocations[agent.id])} out of a total cake value of {agent.get_total_cake_value()}")
+            for other_agent in agents:
+                if other_agent.id is not agent.id:
+                    logging.info(f"Agent {agent.id} values Agent {other_agent.id}'s slice at {agent.get_value_of_atoms(allocations[other_agent.id])}")
         # TODO print summary statistics and analysis
 
 
@@ -116,6 +120,10 @@ def main(args):
     parser.add_option("--num-pieces",
                       dest="num_pieces", default=10, type="int",
                       help="Set number of pieces the cake is divided into")
+    
+    parser.add_option("--iters",
+                      dest="iters", default=1, type="int",
+                      help="Set number of iterations to run")
 
     (options, args) = parser.parse_args()
 
@@ -143,9 +151,11 @@ def main(args):
     config.add("procedure", procedure)
     config.add("num_pieces", options.num_pieces)
     config.add("agents_to_run", agents_to_run)
+    config.add("iters", options.iters)
 
     sim = Sim(config)
-    sim.run_sim()
+    for i in range (config.iters):
+        sim.run_sim()
 
 if __name__ == "__main__":
     # The next two lines are for profiling

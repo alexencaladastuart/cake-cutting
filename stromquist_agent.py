@@ -21,12 +21,12 @@ class StromquistAgent(Agent):
 
         if my_knife >= middle_knife:
             if Left >= Right:
-                print(f"Agent {self.id} called cut when i is {i}")
+                print(f"Agent {self.id} called cut!")
                 return True
         
         if my_knife < middle_knife:
             if Left >= Middle:
-                print(f"Agent {self.id} called cut when i is {i}")
+                print(f"Agent {self.id} called cut!")
                 return True
         
         return False
