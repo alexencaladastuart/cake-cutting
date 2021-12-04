@@ -58,13 +58,20 @@ class Sim:
 
         # Run procedure to get a list of the pieces allocated to each agent
         allocations = procedure.run(agents)
-        logging.info("Allocations: %s" % allocations)
+        statistics = []
+        logging.debug("Allocations: %s" % allocations)
         for agent in agents:
-            logging.info(f"Agent {agent.id} received a total of {agent.get_value_of_atoms(allocations[agent.id])} out of a total cake value of {agent.get_total_cake_value()}")
+            percentage_received = agent.get_value_of_atoms(allocations[agent.id])/agent.get_total_cake_value()
+            envious = False
+            logging.debug(f"Agent {agent.id} received a total of {agent.get_value_of_atoms(allocations[agent.id])} out of a total cake value of {agent.get_total_cake_value()}")
             for other_agent in agents:
                 if other_agent.id is not agent.id:
-                    logging.info(f"Agent {agent.id} values Agent {other_agent.id}'s slice at {agent.get_value_of_atoms(allocations[other_agent.id])}")
-        # TODO print summary statistics and analysis
+                    if agent.get_value_of_atoms(allocations[other_agent.id]) > agent.get_value_of_atoms(allocations[agent.id]):
+                        envious = True
+                    logging.debug(f"Agent {agent.id} values Agent {other_agent.id}'s slice at {agent.get_value_of_atoms(allocations[other_agent.id])}")
+            statistics.append([percentage_received, envious])
+        return statistics
+        
 
 
 def configure_logging(loglevel):
@@ -163,8 +170,16 @@ def main(args):
     config.add("iters", options.iters)
 
     sim = Sim(config)
+    agent_statistics = [[0,0] for i in range(len(agents_to_run))]
     for i in range (config.iters):
-        sim.run_sim()
+        statistics = sim.run_sim()
+        for j in range(len(agents_to_run)):
+            agent_statistics[j][0] += statistics[j][0]
+            if statistics[j][1] == True:
+                agent_statistics[j][1] += (1/config.iters)
+    logging.info("=========SUMMARY=========")
+    for i in range(len(agents_to_run)):
+        logging.info(f"Agent {i} got {agent_statistics[i][0]} of the cake and was envious {agent_statistics[i][1]} of the time")
 
 if __name__ == "__main__":
     # The next two lines are for profiling
