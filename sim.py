@@ -66,6 +66,7 @@ class Sim:
         # Print proportionality and envy statistics
         statistics = []
         for agent in agents:
+            amount_received = agent.get_value_of_atoms(allocations[agent.id])
             percentage_received = agent.get_value_of_atoms(allocations[agent.id])/agent.get_total_cake_value()
             envious = False
             logging.debug(f"Agent {agent.id} received a total of {agent.get_value_of_atoms(allocations[agent.id])} out of a total cake value of {agent.get_total_cake_value()}")
@@ -74,7 +75,7 @@ class Sim:
                     if agent.get_value_of_atoms(allocations[other_agent.id]) > agent.get_value_of_atoms(allocations[agent.id]):
                         envious = True
                     logging.debug(f"Agent {agent.id} values Agent {other_agent.id}'s slice at {agent.get_value_of_atoms(allocations[other_agent.id])}")
-            statistics.append([percentage_received, envious, percentage_received < 1.0/len(agents)])
+            statistics.append([percentage_received, envious, percentage_received < 1.0/len(agents), amount_received])
         return statistics
 
 
@@ -180,10 +181,12 @@ def main(args):
 
     sim = Sim(config)
     agent_statistics = [[0,0,0] for i in range(config.num_agents)]
+    total_welfare = 0
     for i in range (config.iters):
         statistics = sim.run_sim()
         for j in range(config.num_agents):
             agent_statistics[j][0] += statistics[j][0]/config.iters
+            total_welfare += statistics[j][3]
             if statistics[j][1] == True:
                 agent_statistics[j][1] += (1/config.iters)
             if statistics[j][2] == True:
@@ -191,6 +194,7 @@ def main(args):
     logging.info("=========SUMMARY=========")
     for i in range(config.num_agents):
         logging.info(f"Agent {i} got {agent_statistics[i][0]} of the cake, did not get a fair proportion {agent_statistics[i][2]} of the time, and was envious {agent_statistics[i][1]} of the time")
+    logging.info(f"The total welfare is {total_welfare/config.iters}")
 
 if __name__ == "__main__":
     # The next two lines are for profiling
