@@ -39,7 +39,7 @@ class Agent:
         """Cut a piece into two (approximately) equally-valued halves"""
         left = 0
         right = sum(self.V[i:j])
-        for k in range(i + 1, j):
+        for k in range(i + 1, j + 1):
             left += self.V[k - 1]
             right -= self.V[k - 1]
             if left >= right:

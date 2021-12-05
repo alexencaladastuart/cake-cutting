@@ -192,9 +192,19 @@ def main(args):
             if statistics[j][2] == True:
                 agent_statistics[j][2] += (1/config.iters)
     logging.info("=========SUMMARY=========")
+    average_nonproportionality_rate = 0
+    average_envy_rate = 0
+    worst_envy_rate = 0
     for i in range(config.num_agents):
         logging.info(f"Agent {i} got {agent_statistics[i][0]} of the cake, did not get a fair proportion {agent_statistics[i][2]} of the time, and was envious {agent_statistics[i][1]} of the time")
+        average_nonproportionality_rate += agent_statistics[i][2]/config.num_agents
+        average_envy_rate += agent_statistics[i][1]/config.num_agents
+        if agent_statistics[i][1] > worst_envy_rate:
+            worst_envy_rate = agent_statistics[i][1]
     logging.info(f"The total welfare is {total_welfare/config.iters}")
+    logging.info(f"The average nonproportionality rate is {average_nonproportionality_rate}")
+    logging.info(f"The average envy rate is {average_envy_rate}")
+    logging.info(f"The worst envy rate is {worst_envy_rate}")
 
 if __name__ == "__main__":
     # The next two lines are for profiling
