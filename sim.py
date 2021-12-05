@@ -17,8 +17,9 @@ from util import *
 from dummy import Dummy
 from stromquist import Stromquist
 from last_diminisher import LastDiminisher
+from recursive import Recursive
 
-procedures = ['dummy', 'stromquist', 'last_diminisher']
+procedures = ['dummy', 'stromquist', 'last_diminisher', 'recursive']
 
 class Sim:
     def __init__(self, config):
@@ -36,6 +37,8 @@ class Sim:
             procedure = Stromquist(conf)
         elif conf.procedure.lower() == 'last_diminisher':
             procedure = LastDiminisher(conf)
+        elif conf.procedure.lower() == 'recursive':
+            procedure = Recursive(conf)
         else:
             raise ValueError("invalid procedure %s" % conf.procedure.lower())
 
