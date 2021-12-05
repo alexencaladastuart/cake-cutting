@@ -71,7 +71,7 @@ class Sim:
                     if agent.get_value_of_atoms(allocations[other_agent.id]) > agent.get_value_of_atoms(allocations[agent.id]):
                         envious = True
                     logging.debug(f"Agent {agent.id} values Agent {other_agent.id}'s slice at {agent.get_value_of_atoms(allocations[other_agent.id])}")
-            statistics.append([percentage_received, envious])
+            statistics.append([percentage_received, envious, percentage_received < 1.0/len(agents)])
         return statistics
 
 
@@ -176,16 +176,18 @@ def main(args):
         raise ValueError("cannot have more agents than pieces")
 
     sim = Sim(config)
-    agent_statistics = [[0,0] for i in range(config.num_agents)]
+    agent_statistics = [[0,0,0] for i in range(config.num_agents)]
     for i in range (config.iters):
         statistics = sim.run_sim()
         for j in range(config.num_agents):
             agent_statistics[j][0] += statistics[j][0]/config.iters
             if statistics[j][1] == True:
                 agent_statistics[j][1] += (1/config.iters)
+            if statistics[j][2] == True:
+                agent_statistics[j][2] += (1/config.iters)
     logging.info("=========SUMMARY=========")
     for i in range(config.num_agents):
-        logging.info(f"Agent {i} got {agent_statistics[i][0]} of the cake and was envious {agent_statistics[i][1]} of the time")
+        logging.info(f"Agent {i} got {agent_statistics[i][0]} of the cake, did not get a fair proportion {agent_statistics[i][2]} of the time, and was envious {agent_statistics[i][1]} of the time")
 
 if __name__ == "__main__":
     # The next two lines are for profiling
