@@ -12,21 +12,14 @@ class StromquistAgent(Agent):
         sorted_pos = list(positions.values())
         sorted_pos.sort()
         middle_knife = sorted_pos[1]
-        my_knife = positions[self.id]
 
         Left = sum(self.V[:i])
         Middle = sum(self.V[i:middle_knife])
         Right = sum(self.V[middle_knife:])
 
-        if my_knife >= middle_knife:
-            if Left >= Right:
-                logging.info(f"Agent {self.id} called cut!")
-                return True
-        
-        if my_knife < middle_knife:
-            if Left >= Middle:
-                logging.info(f"Agent {self.id} called cut!")
-                return True
+        if Left >= Right and Left >= Middle:
+            logging.debug(f"Agent {self.id} called cut!")
+            return True
         
         return False
 
@@ -38,5 +31,5 @@ class StromquistAgent(Agent):
         while value < totalvalue/2:
             value += cake[j]
             j += 1
-        logging.info(f"Agent {self.id} positioned their knife at {i+j}")
+        logging.debug(f"Agent {self.id} positioned their knife at {i+j}")
         return i + j
