@@ -1,8 +1,10 @@
 # Fair Cake-Cutting Algorithms
 
-##### Alex Encalada-Stuart, Alison Simons, and Vera Zhou
+Alex Encalada-Stuart, Alison Simons, and Vera Zhou\
 
-##### Final project for CS 136, Fall 2021
+Final project for CS 136, Fall 2021
+
+***
 
 ### Summary
 
@@ -32,5 +34,6 @@ The average nonproportionality rate is 0.0
 The average envy rate is 0.8520000000000006
 The worst envy rate is 0.9600000000000006
 ```
-Note 1: Stromquist can only be run with 3 agents.
-Note 2: Recursive halving works best when the number of agents is a power of 2 (i.e. 2, 4, 8, 16, etc.)
+Note 1: Stromquist can only be run with 3 agents.\
+Note 2: Recursive halving works best when the number of agents is a power of 2 (i.e. 2, 4, 8, 16, etc.).\
+Note 3: If more information is desired, use `--loglevel=Debug`.
