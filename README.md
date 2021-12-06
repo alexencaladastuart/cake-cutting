@@ -1,6 +1,6 @@
 # Fair Cake-Cutting Algorithms
 
-Alex Encalada-Stuart, Alison Simons, and Vera Zhou\
+Alex Encalada-Stuart, Alison Simons, and Vera Zhou
 
 Final project for CS 136, Fall 2021
 
