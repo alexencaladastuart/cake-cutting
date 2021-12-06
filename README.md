@@ -16,7 +16,7 @@ To run our simulation, the user should simply type `python3 sim.py` followed by 
 ```
 python3 sim.py last_diminisher Normalized,10 --seed=0 --num-pieces=500 --loglevel=Info --iters=100
 ```
-The program will output statistics for each agent as overall statistics. For example, the above command will print out the following:
+The program will output statistics for each agent as well as overall statistics. For example, the above command will print out the following:
 ```
 =========SUMMARY=========
 Agent 0 got 0.10464474107435454 of the cake, did not get a fair proportion 0 of the time, and was envious 0.9600000000000006 of the time
